@@ -23,9 +23,9 @@ const schema = z.object({
   stock: z.number().int().nonnegative(),
   category_id: z.string().uuid().nullable().optional(),
   material: z.string().trim().max(60).optional().nullable(),
-  is_featured: z.boolean(),
-  is_best_seller: z.boolean(),
-  is_new_arrival: z.boolean(),
+  featured: z.boolean(),
+  best_seller: z.boolean(),
+  new_arrival: z.boolean(),
   image_url: z.string().trim().max(500).optional().nullable(),
 });
 
@@ -94,9 +94,9 @@ function ProductsAdmin() {
                 <td className="p-3">{formatINR(p.sale_price ?? p.price)}</td>
                 <td className="p-3">{p.stock}</td>
                 <td className="p-3"><div className="flex flex-wrap gap-1">
-                  {p.is_featured && <Tag>Featured</Tag>}
-                  {p.is_best_seller && <Tag>Best</Tag>}
-                  {p.is_new_arrival && <Tag>New</Tag>}
+                  {p.featured && <Tag>Featured</Tag>}
+                  {p.best_seller && <Tag>Best</Tag>}
+                  {p.new_arrival && <Tag>New</Tag>}
                 </div></td>
                 <td className="p-3 text-right">
                   <button onClick={() => setEditing({ ...p, image_url: p.images?.[0]?.url ?? "" })} className="mr-1 inline-grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--section)]"><Pencil className="h-3.5 w-3.5" /></button>
@@ -136,9 +136,9 @@ function ProductDialog({ initial, categories, onClose, onSaved }: { initial: any
     stock: initial.stock ?? 0,
     category_id: initial.category_id ?? null,
     material: initial.material ?? "",
-    is_featured: !!initial.is_featured,
-    is_best_seller: !!initial.is_best_seller,
-    is_new_arrival: !!initial.is_new_arrival,
+    featured: !!initial.featured,
+    best_seller: !!initial.best_seller,
+    new_arrival: !!initial.new_arrival,
     image_url: initial.image_url ?? "",
   });
   const [busy, setBusy] = useState(false);
@@ -197,9 +197,9 @@ function ProductDialog({ initial, categories, onClose, onSaved }: { initial: any
           <Field label="Image URL" full><input value={f.image_url} onChange={(e) => setF({ ...f, image_url: e.target.value })} placeholder="https:// or /src/assets/..." className="inp" /></Field>
           <Field label="Description" full><textarea rows={4} value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} className="inp" /></Field>
           <div className="sm:col-span-2 flex flex-wrap gap-5 text-sm pt-1">
-            <Check label="Featured" checked={f.is_featured} onChange={(v) => setF({ ...f, is_featured: v })} />
-            <Check label="Best seller" checked={f.is_best_seller} onChange={(v) => setF({ ...f, is_best_seller: v })} />
-            <Check label="New arrival" checked={f.is_new_arrival} onChange={(v) => setF({ ...f, is_new_arrival: v })} />
+            <Check label="Featured" checked={f.featured} onChange={(v) => setF({ ...f, featured: v })} />
+            <Check label="Best seller" checked={f.best_seller} onChange={(v) => setF({ ...f, best_seller: v })} />
+            <Check label="New arrival" checked={f.new_arrival} onChange={(v) => setF({ ...f, new_arrival: v })} />
           </div>
         </div>
         <div className="flex justify-end gap-3 p-5 border-t border-border/60">
