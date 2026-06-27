@@ -30,7 +30,7 @@ export function whatsappForProduct(opts: {
     "Please let me know the next steps for payment and delivery.",
   ].filter(Boolean) as string[];
   const msg = encodeURIComponent(lines.join("\n"));
-  return `https://wa.me/${NUMBER}?text=${msg}`;
+  return `https://api.whatsapp.com/send?phone=${NUMBER}&text=${msg}`;
 }
 
 export function whatsappForOrder(opts: {
@@ -53,5 +53,5 @@ export function whatsappForOrder(opts: {
     "Please confirm payment and delivery.",
   ];
   const msg = encodeURIComponent(lines.join("\n"));
-  return `https://wa.me/${NUMBER}?text=${msg}`;
+  return `https://api.whatsapp.com/send?phone=${NUMBER}&text=${msg}`;
 }
