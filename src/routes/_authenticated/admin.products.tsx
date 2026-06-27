@@ -22,7 +22,7 @@ const schema = z.object({
   sku: z.string().trim().max(60).optional().nullable(),
   stock: z.number().int().nonnegative(),
   category_id: z.string().uuid().nullable().optional(),
-  material: z.string().trim().max(60).optional().nullable(),
+  materials: z.array(z.string()).default([]),
   featured: z.boolean(),
   best_seller: z.boolean(),
   new_arrival: z.boolean(),
