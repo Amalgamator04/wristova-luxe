@@ -14,8 +14,8 @@ export const Route = createFileRoute("/_authenticated/admin/coupons")({
 const schema = z.object({
   code: z.string().trim().min(2).max(40).regex(/^[A-Z0-9_-]+$/i, "Letters, numbers, _ or -"),
   discount_type: z.enum(["percent", "fixed"]),
-  amount: z.number().nonnegative(),
-  min_subtotal: z.number().nonnegative().nullable().optional(),
+  value: z.number().nonnegative(),
+  min_subtotal: z.number().nonnegative(),
   active: z.boolean(),
 });
 

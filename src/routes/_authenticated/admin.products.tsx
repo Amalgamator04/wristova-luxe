@@ -135,7 +135,7 @@ function ProductDialog({ initial, categories, onClose, onSaved }: { initial: any
     sku: initial.sku ?? "",
     stock: initial.stock ?? 0,
     category_id: initial.category_id ?? null,
-    material: initial.material ?? "",
+    materials: (initial.materials ?? []) as string[],
     featured: !!initial.featured,
     best_seller: !!initial.best_seller,
     new_arrival: !!initial.new_arrival,
@@ -193,7 +193,7 @@ function ProductDialog({ initial, categories, onClose, onSaved }: { initial: any
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </Field>
-          <Field label="Material"><input value={f.material} onChange={(e) => setF({ ...f, material: e.target.value })} className="inp" /></Field>
+          <Field label="Materials (comma-separated)"><input value={(f.materials ?? []).join(", ")} onChange={(e) => setF({ ...f, materials: e.target.value.split(",").map((s) => s.trim()).filter(Boolean) })} className="inp" /></Field>
           <Field label="Image URL" full><input value={f.image_url} onChange={(e) => setF({ ...f, image_url: e.target.value })} placeholder="https:// or /src/assets/..." className="inp" /></Field>
           <Field label="Description" full><textarea rows={4} value={f.description} onChange={(e) => setF({ ...f, description: e.target.value })} className="inp" /></Field>
           <div className="sm:col-span-2 flex flex-wrap gap-5 text-sm pt-1">
