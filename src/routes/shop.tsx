@@ -70,28 +70,28 @@ function Shop() {
           <Block title="Search">
             <input
               value={sp.q ?? ""}
-              onChange={(e) => navigate({ search: (prev) => ({ ...prev, q: e.target.value || undefined }) })}
+              onChange={(e) => navigate({ search: (prev: any) => ({ ...prev, q: e.target.value || undefined }) })}
               placeholder="Search products"
               className="w-full rounded-full border border-input bg-card px-4 py-2 text-sm outline-none focus:border-foreground/50"
             />
           </Block>
           <Block title="Material">
             <div className="flex flex-col gap-2">
-              <button onClick={() => navigate({ search: (p) => ({ ...p, material: undefined }) })} className={`text-left text-sm ${!sp.material ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>All materials</button>
+              <button onClick={() => navigate({ search: (p: any) => ({ ...p, material: undefined }) })} className={`text-left text-sm ${!sp.material ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>All materials</button>
               {allMaterials.map((m) => (
-                <button key={m} onClick={() => navigate({ search: (p) => ({ ...p, material: m }) })} className={`text-left text-sm ${sp.material === m ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>{m}</button>
+                <button key={m} onClick={() => navigate({ search: (p: any) => ({ ...p, material: m }) })} className={`text-left text-sm ${sp.material === m ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}>{m}</button>
               ))}
             </div>
           </Block>
           <Block title="Price">
             <div className="flex gap-2">
-              <input type="number" placeholder="Min" value={sp.minPrice ?? ""} onChange={(e) => navigate({ search: (p) => ({ ...p, minPrice: e.target.value ? Number(e.target.value) : undefined }) })} className="w-full rounded-full border border-input bg-card px-3 py-2 text-sm outline-none" />
-              <input type="number" placeholder="Max" value={sp.maxPrice ?? ""} onChange={(e) => navigate({ search: (p) => ({ ...p, maxPrice: e.target.value ? Number(e.target.value) : undefined }) })} className="w-full rounded-full border border-input bg-card px-3 py-2 text-sm outline-none" />
+              <input type="number" placeholder="Min" value={sp.minPrice ?? ""} onChange={(e) => navigate({ search: (p: any) => ({ ...p, minPrice: e.target.value ? Number(e.target.value) : undefined }) })} className="w-full rounded-full border border-input bg-card px-3 py-2 text-sm outline-none" />
+              <input type="number" placeholder="Max" value={sp.maxPrice ?? ""} onChange={(e) => navigate({ search: (p: any) => ({ ...p, maxPrice: e.target.value ? Number(e.target.value) : undefined }) })} className="w-full rounded-full border border-input bg-card px-3 py-2 text-sm outline-none" />
             </div>
           </Block>
           <Block title="Availability">
             <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={!!sp.inStock} onChange={(e) => navigate({ search: (p) => ({ ...p, inStock: e.target.checked || undefined }) })} />
+              <input type="checkbox" checked={!!sp.inStock} onChange={(e) => navigate({ search: (p: any) => ({ ...p, inStock: e.target.checked || undefined }) })} />
               In stock only
             </label>
           </Block>
@@ -101,7 +101,7 @@ function Shop() {
             <div className="text-sm text-muted-foreground">{filtered.length} products</div>
             <select
               value={sp.sort}
-              onChange={(e) => navigate({ search: (p) => ({ ...p, sort: e.target.value as any }) })}
+              onChange={(e) => navigate({ search: (p: any) => ({ ...p, sort: e.target.value as any }) })}
               className="rounded-full border border-input bg-card px-4 py-2 text-sm"
             >
               <option value="latest">Latest</option>
