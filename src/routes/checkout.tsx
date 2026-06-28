@@ -81,6 +81,19 @@ function Checkout() {
     await supabase.from("order_items").insert(orderItems);
     await supabase.from("cart_items").delete().eq("user_id", user!.id);
     qc.invalidateQueries();
+    try {
+      await sendEmail({ data: {
+        orderNumber: order.order_number ?? order.id,
+        customerName: form.name,
+        customerEmail: form.email,
+        customerPhone: form.phone,
+        address: { line1: form.line1, city: form.city, state: form.state, pincode: form.pincode },
+        notes: form.notes || null,
+        paymentMethod,
+        subtotal, shipping, total,
+        items: cart.map((c) => ({ name: c.product.name, qty: c.qty, price: effectivePrice(c.product), variant: c.variant ?? null })),
+      }});
+    } catch (e) { console.error("order email failed", e); }
     setBusy(false);
     if (paymentMethod === "whatsapp") {
       const url = whatsappForOrder({
