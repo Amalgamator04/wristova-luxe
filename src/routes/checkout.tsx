@@ -33,6 +33,7 @@ function Checkout() {
   const { data: items } = useQuery(cartQuery(user?.id ?? null));
   const qc = useQueryClient();
   const navigate = useNavigate();
+  const sendEmail = useServerFn(sendOrderEmail);
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "whatsapp">("cod");
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({
