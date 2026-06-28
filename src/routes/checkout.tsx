@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { toast } from "sonner";
 import { whatsappForOrder } from "@/lib/whatsapp";
+import { useServerFn } from "@tanstack/react-start";
+import { sendOrderEmail } from "@/lib/order-email.functions";
 
 const addressSchema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -31,6 +33,7 @@ function Checkout() {
   const { data: items } = useQuery(cartQuery(user?.id ?? null));
   const qc = useQueryClient();
   const navigate = useNavigate();
+  const sendEmail = useServerFn(sendOrderEmail);
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "whatsapp">("cod");
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({
@@ -78,6 +81,19 @@ function Checkout() {
     await supabase.from("order_items").insert(orderItems);
     await supabase.from("cart_items").delete().eq("user_id", user!.id);
     qc.invalidateQueries();
+    try {
+      await sendEmail({ data: {
+        orderNumber: order.order_number ?? order.id,
+        customerName: form.name,
+        customerEmail: form.email,
+        customerPhone: form.phone,
+        address: { line1: form.line1, city: form.city, state: form.state, pincode: form.pincode },
+        notes: form.notes || null,
+        paymentMethod,
+        subtotal, shipping, total,
+        items: cart.map((c) => ({ name: c.product.name, qty: c.qty, price: effectivePrice(c.product), variant: c.variant ?? null })),
+      }});
+    } catch (e) { console.error("order email failed", e); }
     setBusy(false);
     if (paymentMethod === "whatsapp") {
       const url = whatsappForOrder({
