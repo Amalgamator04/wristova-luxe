@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { toast } from "sonner";
 import { whatsappForOrder } from "@/lib/whatsapp";
+import { useServerFn } from "@tanstack/react-start";
+import { sendOrderEmail } from "@/lib/order-email.functions";
 
 const addressSchema = z.object({
   name: z.string().trim().min(2).max(120),
