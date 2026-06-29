@@ -66,17 +66,6 @@ function ProductPage() {
     qc.invalidateQueries({ queryKey: ["wishlist"] });
   }
 
-  function openWhatsApp() {
-    const url = whatsappForProduct({
-      productName: p!.name,
-      price,
-      qty,
-      productUrl: typeof window !== "undefined" ? window.location.href : `/product/${p!.slug}`,
-      productImage: typeof window !== "undefined" ? (window.location.origin + resolveAsset(p!.images?.[0]?.url)) : null,
-      customerName: user?.user_metadata?.full_name || null,
-    });
-    window.open(url, "_blank");
-  }
 
   return (
     <SiteShell>
