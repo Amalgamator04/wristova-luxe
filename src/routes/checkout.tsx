@@ -133,20 +133,10 @@ function Checkout() {
               <Input label="Order notes (optional)" value={form.notes} onChange={(v) => setForm({ ...form, notes: v })} />
             </Section>
             <Section title="Payment">
-              <label className={`flex gap-3 cursor-pointer rounded-2xl border p-5 ${paymentMethod === "cod" ? "border-foreground" : "border-input"}`}>
-                <input type="radio" checked={paymentMethod === "cod"} onChange={() => setPaymentMethod("cod")} />
-                <div>
-                  <div className="font-medium">Cash on Delivery</div>
-                  <div className="text-sm text-muted-foreground">Pay when your bracelet arrives.</div>
-                </div>
-              </label>
-              <label className={`flex gap-3 cursor-pointer rounded-2xl border p-5 ${paymentMethod === "whatsapp" ? "border-foreground" : "border-input"}`}>
-                <input type="radio" checked={paymentMethod === "whatsapp"} onChange={() => setPaymentMethod("whatsapp")} />
-                <div>
-                  <div className="font-medium">Order via WhatsApp</div>
-                  <div className="text-sm text-muted-foreground">We'll confirm payment and delivery on chat.</div>
-                </div>
-              </label>
+              <div className="rounded-2xl border border-foreground p-5">
+                <div className="font-medium">Cash on Delivery</div>
+                <div className="text-sm text-muted-foreground">Pay when your bracelet arrives.</div>
+              </div>
             </Section>
           </div>
           <aside className="rounded-2xl bg-card p-6 shadow-luxe h-fit lg:sticky lg:top-24">
