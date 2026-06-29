@@ -13,7 +13,7 @@ const items = [
   ["How long does shipping take?", "3–5 business days across India. Free on orders over ₹2,000."],
   ["What's your return policy?", "14 days from delivery. Unworn, in original packaging. We pay return shipping on faulty items."],
   ["Do you ship internationally?", "Not yet. International shipping is coming in 2026."],
-  ["Can I order on WhatsApp?", "Yes — every product page has a 'Buy on WhatsApp' button. We'll confirm payment and delivery on chat."],
+  ["How do I place an order?", "Add items to your cart and check out with Cash on Delivery — pay when your bracelet arrives."],
 ];
 
 function FAQ() {

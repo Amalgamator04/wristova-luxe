@@ -8,9 +8,9 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 import { toast } from "sonner";
-import { whatsappForOrder } from "@/lib/whatsapp";
 import { useServerFn } from "@tanstack/react-start";
 import { sendOrderEmail } from "@/lib/order-email.functions";
+import { appendOrderToSheet } from "@/lib/order-sheet.functions";
 
 const addressSchema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -34,7 +34,8 @@ function Checkout() {
   const qc = useQueryClient();
   const navigate = useNavigate();
   const sendEmail = useServerFn(sendOrderEmail);
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "whatsapp">("cod");
+  const appendSheet = useServerFn(appendOrderToSheet);
+  const paymentMethod = "cod" as const;
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({
     name: user?.user_metadata?.full_name ?? "",
@@ -94,14 +95,19 @@ function Checkout() {
         items: cart.map((c) => ({ name: c.product.name, qty: c.qty, price: effectivePrice(c.product), variant: c.variant ?? null })),
       }});
     } catch (e) { console.error("order email failed", e); }
+    try {
+      await appendSheet({ data: {
+        orderNumber: order.order_number ?? order.id,
+        customerName: form.name,
+        customerEmail: form.email,
+        customerPhone: form.phone,
+        address: { line1: form.line1, city: form.city, state: form.state, pincode: form.pincode },
+        paymentMethod,
+        subtotal, total,
+        items: cart.map((c) => ({ name: c.product.name, qty: c.qty, price: effectivePrice(c.product), variant: c.variant ?? null })),
+      }});
+    } catch (e) { console.error("order sheet append failed", e); }
     setBusy(false);
-    if (paymentMethod === "whatsapp") {
-      const url = whatsappForOrder({
-        orderNumber: order.order_number, customerName: form.name, total,
-        items: cart.map((c) => ({ name: c.product.name, qty: c.qty, price: effectivePrice(c.product) })),
-      });
-      window.open(url, "_blank");
-    }
     toast.success("Order placed.");
     navigate({ to: "/account/orders" });
   }
@@ -127,20 +133,10 @@ function Checkout() {
               <Input label="Order notes (optional)" value={form.notes} onChange={(v) => setForm({ ...form, notes: v })} />
             </Section>
             <Section title="Payment">
-              <label className={`flex gap-3 cursor-pointer rounded-2xl border p-5 ${paymentMethod === "cod" ? "border-foreground" : "border-input"}`}>
-                <input type="radio" checked={paymentMethod === "cod"} onChange={() => setPaymentMethod("cod")} />
-                <div>
-                  <div className="font-medium">Cash on Delivery</div>
-                  <div className="text-sm text-muted-foreground">Pay when your bracelet arrives.</div>
-                </div>
-              </label>
-              <label className={`flex gap-3 cursor-pointer rounded-2xl border p-5 ${paymentMethod === "whatsapp" ? "border-foreground" : "border-input"}`}>
-                <input type="radio" checked={paymentMethod === "whatsapp"} onChange={() => setPaymentMethod("whatsapp")} />
-                <div>
-                  <div className="font-medium">Order via WhatsApp</div>
-                  <div className="text-sm text-muted-foreground">We'll confirm payment and delivery on chat.</div>
-                </div>
-              </label>
+              <div className="rounded-2xl border border-foreground p-5">
+                <div className="font-medium">Cash on Delivery</div>
+                <div className="text-sm text-muted-foreground">Pay when your bracelet arrives.</div>
+              </div>
             </Section>
           </div>
           <aside className="rounded-2xl bg-card p-6 shadow-luxe h-fit lg:sticky lg:top-24">
