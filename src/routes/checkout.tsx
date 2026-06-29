@@ -34,7 +34,8 @@ function Checkout() {
   const qc = useQueryClient();
   const navigate = useNavigate();
   const sendEmail = useServerFn(sendOrderEmail);
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "whatsapp">("cod");
+  const appendSheet = useServerFn(appendOrderToSheet);
+  const paymentMethod = "cod" as const;
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({
     name: user?.user_metadata?.full_name ?? "",
