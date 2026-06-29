@@ -95,14 +95,19 @@ function Checkout() {
         items: cart.map((c) => ({ name: c.product.name, qty: c.qty, price: effectivePrice(c.product), variant: c.variant ?? null })),
       }});
     } catch (e) { console.error("order email failed", e); }
+    try {
+      await appendSheet({ data: {
+        orderNumber: order.order_number ?? order.id,
+        customerName: form.name,
+        customerEmail: form.email,
+        customerPhone: form.phone,
+        address: { line1: form.line1, city: form.city, state: form.state, pincode: form.pincode },
+        paymentMethod,
+        subtotal, total,
+        items: cart.map((c) => ({ name: c.product.name, qty: c.qty, price: effectivePrice(c.product), variant: c.variant ?? null })),
+      }});
+    } catch (e) { console.error("order sheet append failed", e); }
     setBusy(false);
-    if (paymentMethod === "whatsapp") {
-      const url = whatsappForOrder({
-        orderNumber: order.order_number, customerName: form.name, total,
-        items: cart.map((c) => ({ name: c.product.name, qty: c.qty, price: effectivePrice(c.product) })),
-      });
-      window.open(url, "_blank");
-    }
     toast.success("Order placed.");
     navigate({ to: "/account/orders" });
   }
