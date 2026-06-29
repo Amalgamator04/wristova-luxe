@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { whatsappForProduct } from "@/lib/whatsapp";
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Minus, Plus, ShoppingBag, Zap } from "lucide-react";
 
