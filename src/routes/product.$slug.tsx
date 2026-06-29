@@ -125,14 +125,9 @@ function ProductPage() {
                 <button disabled={p.stock <= 0} onClick={() => addToCart(false)} className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-4 text-sm font-medium text-primary-foreground hover:opacity-90 transition disabled:opacity-50">
                   <ShoppingBag className="h-4 w-4" /> Add to cart
                 </button>
-                <div className="grid grid-cols-2 gap-3">
-                  <button disabled={p.stock <= 0} onClick={() => addToCart(true)} className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground/30 px-6 py-3.5 text-sm font-medium hover:bg-foreground hover:text-background transition disabled:opacity-50">
-                    <Zap className="h-4 w-4" /> Buy now
-                  </button>
-                  <button onClick={openWhatsApp} className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-medium text-white hover:opacity-90 transition">
-                    Buy on WhatsApp
-                  </button>
-                </div>
+                <button disabled={p.stock <= 0} onClick={() => addToCart(true)} className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground/30 px-6 py-3.5 text-sm font-medium hover:bg-foreground hover:text-background transition disabled:opacity-50">
+                  <Zap className="h-4 w-4" /> Buy now
+                </button>
               </div>
 
               <Accordion type="single" collapsible defaultValue="materials" className="mt-10">
